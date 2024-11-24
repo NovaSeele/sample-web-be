@@ -1,9 +1,9 @@
 import express from 'express';
 import { exampleGet, examplePost } from '../controllers/exampleController.js';
 
-const router = express.Router();
+const route = express.Router();
 
-router.get('/example-get', exampleGet);
-router.post('/example-post', examplePost);
+route.get('/example-get', exampleGet);
+route.post('/example-post', examplePost);
 
-export default router;
+export default route;

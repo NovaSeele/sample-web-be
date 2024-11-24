@@ -2,10 +2,14 @@ import express from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import route from "./src/routes/exampleRoute.js";
-import signinRoute from './src/routes/signinRoute.js';
+import auth_router from "./src/routes/authRoute.js";
+import connectDB from "./database.js";
 
 // Load environment variables from .env file
 dotenv.config();
+
+// Connect to MongoDB
+connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -24,8 +28,8 @@ app.get("/", (req, res) => {
 // Route for example requests
 app.use("/example", route);
 
-// Route for sign-in requests
-app.use('/auth', signinRoute);
+// Route for authentication requests
+app.use("/auth", auth_router);
 
 // Start the server
 app.listen(PORT, () => {
