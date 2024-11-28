@@ -14,6 +14,30 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  created_at: {
+    type: Date,
+    default: Date.now,
+  },
+  updated_at: {
+    type: Date,
+    default: Date.now,
+  },
+  workspace: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Workspace",
+  },
+  projects: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Project",
+    },
+  ],
+  assigned_tickets: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Ticket",
+    },
+  ],
   // Add other fields as necessary
 });
 
