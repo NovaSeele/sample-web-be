@@ -12,7 +12,7 @@ const db = mysql.createConnection({
   password: process.env.MYSQL_PASSWORD, 
   database: process.env.MYSQL_DB_NAME, 
   ssl: {
-    ca: fs.readFileSync("./certs/ca.pem"), // Path to the Aiven SSL certificate
+    ca: fs.readFileSync("./certs/ca.pem"),
   },
 });
 
