@@ -6,11 +6,11 @@ dotenv.config();
 
 // Create MySQL connection
 const db = mysql.createConnection({
-  host: process.env.MYSQL_HOST, //"mysql-pmify-novaseele262003-pmify.i.aivencloud.com"
-  port: process.env.MYSQL_PORT, //"14091"
-  user: process.env.MYSQL_USER, //"avnadmin"
-  password: process.env.MYSQL_PASSWORD, //"AVNS_PAfUYhp60F8I6mvc16a"
-  database: process.env.MYSQL_DB_NAME, //"pmify"
+  host: process.env.MYSQL_HOST, 
+  port: process.env.MYSQL_PORT, 
+  user: process.env.MYSQL_USER, 
+  password: process.env.MYSQL_PASSWORD, 
+  database: process.env.MYSQL_DB_NAME, 
   ssl: {
     ca: fs.readFileSync("./certs/ca.pem"), // Path to the Aiven SSL certificate
   },
