@@ -1,46 +1,24 @@
-import mongoose from "mongoose";
+import db from "../../database.js";
 
-const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-  created_at: {
-    type: Date,
-    default: Date.now,
-  },
-  updated_at: {
-    type: Date,
-    default: Date.now,
-  },
-  workspace: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Workspace",
-  },
-  projects: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Project",
-    },
-  ],
-  assigned_tickets: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Ticket",
-    },
-  ],
-  // Add other fields as necessary
-});
+const createUsersTable = () => {
+  const createTableQuery = `
+    CREATE TABLE IF NOT EXISTS users (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      username VARCHAR(50) NOT NULL,
+      email VARCHAR(100) UNIQUE NOT NULL,
+      password VARCHAR(255) NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    );
+  `;
 
-const User = mongoose.model("User", userSchema);
+  db.query(createTableQuery, (err, result) => {
+    if (err) {
+      console.error("Error creating users table:", err);
+      return;
+    }
+    console.log("Users table ensured.");
+  });
+};
 
-export default User;
+export default createUsersTable;

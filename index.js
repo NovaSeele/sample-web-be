@@ -3,13 +3,13 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import route from "./src/routes/exampleRoute.js";
 import auth_router from "./src/routes/authRoute.js";
-import connectDB from "./database.js";
+import createUsersTable from "./src/models/userModel.js";
 
 // Load environment variables from .env file
 dotenv.config();
 
 // Connect to MongoDB
-connectDB();
+createUsersTable();
 
 const app = express();
 const PORT = process.env.PORT || 3000;

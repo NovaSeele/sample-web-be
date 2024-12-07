@@ -1,39 +1,61 @@
-import { authenticateUser } from '../services/authService.js';
-import jwt from 'jsonwebtoken';
-import User from '../models/userModel.js';
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import db from "../../database.js";
 
-export const signin = (req, res) => {
-  const { username, password } = req.body;
+const signup = async (req, res) => {
+  const { username, email, password } = req.body;
 
-  const result = authenticateUser(username, password);
-
-  if (!result.success) {
-    return res.status(401).json(result);
-  }
-
-  // Generate JWT token
-  const token = jwt.sign({ id: result.user.id, username: result.user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-  res.json({ success: true, message: result.message, token });
-};
-
-export const signup = async (req, res) => {
-  const { username, password, email } = req.body;
-
-  if (!username || !password || !email) {
-    return res.status(400).json({ success: false, message: "Username, password, and email are required." });
+  if (!username || !email || !password) {
+    return res.status(400).json({ message: "All fields are required" });
   }
 
   try {
-    // Create a new user instance
-    const newUser = new User({ username, password, email });
-
-    // Save the user to the database
-    await newUser.save();
-
-    res.json({ success: true, message: "Signup successful." });
-  } catch (error) {
-    // Handle errors, such as duplicate username or validation errors
-    res.status(500).json({ success: false, message: error.message });
+    // const hashedPassword = await bcrypt.hash(password, 10);
+    db.query(
+      "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
+      [username, email, password],
+      (err) => {
+        if (err) {
+          return res.status(500).json({ message: "Error creating user" });
+        }
+        res.status(201).json({ message: "User created successfully" });
+      }
+    );
+  } catch (err) {
+    res.status(500).json({ message: "Error hashing password" });
   }
 };
+
+const login = (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  db.query(
+    "SELECT * FROM users WHERE email = ?",
+    [email],
+    async (err, results) => {
+      if (err) {
+        return res.status(500).json({ message: "Error fetching user" });
+      }
+      if (results.length === 0) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+
+      const user = results[0];
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return res.status(401).json({ message: "Invalid credentials" });
+      }
+
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+        expiresIn: "1h",
+      });
+      res.json({ token });
+    }
+  );
+};
+
+export { login, signup };
