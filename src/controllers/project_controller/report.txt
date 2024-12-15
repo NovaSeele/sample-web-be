@@ -1,0 +1,7 @@
+file CRUD.js chứa các hàm thực hiện các thao tác CRUD với project, excute trên table project
+
+file permission.js chứa hàm cài đặt quyền truy cập của user cho 1 project chỉ định, excute trên table project_permissions
+
+HIỆN ĐÃ TEST THÀNH CÔNG
+
+còn schema project_member chưa có / chưa viết controller function thao tác

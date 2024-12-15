@@ -1,15 +1,13 @@
 import express from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
-import route from "./src/routes/exampleRoute.js";
 import auth_router from "./src/routes/authRoute.js";
-import createUsersTable from "./src/models/userModel.js";
+import project_router from "./src/routes/projectRoute.js";
+import ticket_router from "./src/routes/ticketRoute.js";
+import sprint_router from "./src/routes/sprintRoute.js";
 
 // Load environment variables from .env file
 dotenv.config();
-
-// Connect to MongoDB
-createUsersTable();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,11 +23,17 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to the API" });
 });
 
-// Route for example requests
-app.use("/example", route);
-
-// Route for authentication requests
+// Route for authentication handling
 app.use("/auth", auth_router);
+
+// Route for project handling
+app.use("/project", project_router);
+
+// Route for ticket handling
+app.use("/ticket", ticket_router);
+
+// Route for sprint handling
+app.use("/sprint", sprint_router);
 
 // Start the server
 app.listen(PORT, () => {

@@ -1,0 +1,1 @@
+dự kiến setting dùng session / token nhưng chưa setting

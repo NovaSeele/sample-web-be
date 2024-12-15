@@ -1,0 +1,8 @@
+hiện tại route đã chạy được nhưng bị lỗi 500 vì hiện tại chưa có epic và parent 
+
+lỗi liên quan đến foreign key constraint
+
+'Cannot add or update a child row: a foreign key constraint fails ("pmify"."tickets", CONSTRAINT "tickets_ibfk_3" FOREIGN KEY ("parent") REFERENCES "tickets" ("id"))',
+  sql: "insert into `tickets` (`assignee`, `created_at`, `description`, `epic`, `parent`, `project`, `reporter`, `sprint`, `status`, `summarize`, `title`, `updated_at`, `user_created`) values (1, CURRENT_TIMESTAMP, 'This is a sample description ticket.', 1, 1, 1, 1, 1, 'open', 'Brief summary of the ticket.', 'Sample Ticket Title', CURRENT_TIMESTAMP, 2)
+
+hoàn thiện nốt epic và parent và các foreign key constraint để chạy được
